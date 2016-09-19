@@ -10,13 +10,13 @@
 	  
         <div><input type="submit" value="Submit" name="makeResults"></div>
     </form>
+	BMI = <?php echo $BMI; ?>
     </body>
 </html>
 
 <?php
 $height = ($POST['height']);
-$height = ($POST['weight']);
-$BMI = $height + $weight;
+$weight = ($POST['weight']);
+$BMI = ($weight * ($height * $height);
 
-echo $BMI;
 ?>
