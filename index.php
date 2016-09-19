@@ -16,7 +16,7 @@
 <?php
 $height = ($POST['height']);
 $height = ($POST['weight']);
-$BMI = $height + $wright;
+$BMI = $height + $weight;
 
 echo $BMI;
 ?>
