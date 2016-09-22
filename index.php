@@ -6,7 +6,7 @@
 
   <?php
   
-      $handle = fopen ('gs://s3488990-storage/bmi.txt','w');
+      $handle = fopen ('gs://s3485849-ass2-storage/bmi.txt','w');
       fwrite ($handle, "2");
   
       if(isset($_POST['btn_submit']))
