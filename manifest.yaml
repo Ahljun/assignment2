@@ -1,0 +1,9 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: au-syd.mybluemix.net
+  name: assignment2iLift
+  host: assignment2iLift
+  disk_quota: 1024M
+  buildpack: php_buildpack
