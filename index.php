@@ -29,7 +29,6 @@ if ($result = $mysqli->query($strsql)) {
 </head>
 <body>
     <div class="">
-        <img class="newappIcon" src="images/newapp-icon.png" />
         <h1>
 					Welcome to the <span class="blue">PHP MySQL Sample</span> on Bluemix!
 				</h1>
