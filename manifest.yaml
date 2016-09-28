@@ -1,3 +1,8 @@
+declared-services:
+  php-mysql-db:
+    label: cleardb
+    plan: spark
+
 applications:
 - path: .
   memory: 128M
