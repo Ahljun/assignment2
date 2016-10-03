@@ -4,7 +4,7 @@ import (
         "html/template"
         "net/http"
         "strconv"
-
+        "time"
         "appengine"
         "appengine/datastore"
 )
@@ -13,6 +13,7 @@ type RESULT struct {
 		Height      int64
 		Weight      int64
 		BMI         float64
+		Date        time.Time
 }
 
 func init() {
@@ -53,12 +54,14 @@ var mainpageTemplate = template.Must(template.New("mainpage").Parse(`
   <body>
     <table style="width:300px;margin:10px;">
     <tr>
+	    <th>Date</h>
         <th>Weight</th>
 		<th>Height</th>
 		<th>BMI</th>
     </tr>
     {{range .}}
     <tr>
+	    <td>{{.Date}}</td>
 		<td>{{.Weight}}</td>
 		<td>{{.Height}}</td>
 		<td>{{.BMI | printf "%.2f"}}</td>
@@ -66,7 +69,7 @@ var mainpageTemplate = template.Must(template.New("mainpage").Parse(`
     {{end}}
     </table>
     <form action="/sign" method="post">
-	  <div>Height: <input name="Height" type="number" step="0.01"></input></div>
+	  <div>Height: <input name="Height" type="number"></input></div>
 	  <div>Weight: <input name="Weight" type="number"></input></div>
       <div><input type="submit" value="Submit"></div>
     </form>
@@ -80,7 +83,8 @@ func sign(w http.ResponseWriter, r *http.Request) {
 		Weight, _ := strconv.ParseInt(r.FormValue("Weight"), 10, 64)
 		BMI := (float64(Weight) / (float64(Height) * float64(Height))) * float64(10000) 
 		
-        g := RESULT{         
+        g := RESULT{
+                Date:       time.Now(),		
 				Weight:     Weight,
 				Height:     Height,
 				BMI:        BMI,
