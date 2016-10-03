@@ -10,11 +10,9 @@ import (
 )
 
 type RESULT struct {
-        X           int64
-        Y           int64		
-        Sum     	int64
-		Diff        int64
-		Ave         float64
+		Height      int64
+		Weight      int64
+		BMI         float64
 }
 
 func init() {
@@ -55,25 +53,21 @@ var mainpageTemplate = template.Must(template.New("mainpage").Parse(`
   <body>
     <table style="width:300px;margin:10px;">
     <tr>
-        <th>X</th>
-        <th>Y</th> 		
-        <th>Sum</th>
-        <th>Diff</th>
-        <th>Ave</th>        
+        <th>Weight</th>
+		<th>Height</th>
+		<th>BMI</th>
     </tr>
     {{range .}}
     <tr>
-        <td>{{.X}}</td>
-        <td>{{.Y}}</td> 
-		<td>{{.Sum}}</td>
-		<td>{{.Diff}}</td>
-        <td>{{.Ave | printf "%.2f"}}</td>
+		<td>{{.Weight}}</td>
+		<td>{{.Height}}</td>
+		<td>{{.BMI | printf "%.2f"}}</td>
     </tr>
     {{end}}
     </table>
     <form action="/sign" method="post">
-      <div>X<input name="Xval" type="number"></input></div>
-      <div>Y<input name="Yval" type="number"></input></div>
+	  <div>Height: <input name="Height" type="number" step="0.01"></input></div>
+	  <div>Weight: <input name="Weight" type="number"></input></div>
       <div><input type="submit" value="Submit"></div>
     </form>
   </body>
@@ -82,17 +76,14 @@ var mainpageTemplate = template.Must(template.New("mainpage").Parse(`
 
 func sign(w http.ResponseWriter, r *http.Request) {
         c := appengine.NewContext(r)
-        Xcon, _ := strconv.ParseInt(r.FormValue("Xval"), 10, 64)
-        Ycon, _ := strconv.ParseInt(r.FormValue("Yval"), 10, 64)		
-        sum := Xcon + Ycon
-        diff := Xcon - Ycon
-        ave := float64(Xcon) + float64(Ycon) / 2		
-        g := RESULT{
-                X:          Xcon,
-                Y:          Ycon,                
-                Sum:        sum,
-                Diff:       diff,
-                Ave:        ave,         
+		Height, _ := strconv.ParseInt(r.FormValue("Height"), 10, 64)
+		Weight, _ := strconv.ParseInt(r.FormValue("Weight"), 10, 64)
+		BMI := (float64(Weight) / (float64(Height) * float64(Height))) * float64(10000) 
+		
+        g := RESULT{         
+				Weight:     Weight,
+				Height:     Height,
+				BMI:        BMI,
         }
         key := datastore.NewIncompleteKey(c, "RESULT", resultKey(c))
         _, err := datastore.Put(c, key, &g)
